@@ -1,15 +1,18 @@
 class RecipesController < ApplicationController
 
+  # POST /recipes -> レシピを作成
   def index
     @recipes = Recipe.all
     render json: { recipes: @recipes.select(:id, :title, :making_time, :serves, :ingredients, :cost) }
   end
 
+  # GET /recipes -> 全レシピ一覧を返す
   def show
     @recipe = Recipe.find(params[:id])
     render json: { message: "Recipe details by id", recipe: {title: @recipe.title, making_time: @recipe.making_time, serves: @recipe.serves, ingredients: @recipe.ingredients, cost: @recipe.cost} }
   end
 
+  # GET /recipes/{id} -> 指定レシピ一つを返す
   def create
     @recipe = Recipe.new(recipe_params)
     if @recipe.save
@@ -19,6 +22,7 @@ class RecipesController < ApplicationController
     end
   end
 
+  # PATCH /recipes/{id} -> 指定レシピを更新
   def update
     @recipe = Recipe.find(params[:id])
     if @recipe.update(recipe_params)
@@ -28,6 +32,7 @@ class RecipesController < ApplicationController
     end
   end
 
+  # DELETE /recipes/{id} -> 指定レシピの削除
   def destroy
     @recipe = Recipe.find(params[:id])
     if @recipe
